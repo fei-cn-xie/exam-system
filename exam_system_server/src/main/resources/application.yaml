@@ -2,6 +2,9 @@ server:
   port: 8080
 
 spring:
+  jackson: # LEARN 对于时间和日期进行全局的配置
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://192.168.56.2:3308/exam_system_online?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2b8
@@ -21,3 +24,9 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath*:/com.fei.examsys.mapper/**/*.xml
+
+minio:
+  endpoint: http://192.168.56.2:9090
+  access-key: minioadmin
+  secret-key: minioadmin
+  bucket-name: test
