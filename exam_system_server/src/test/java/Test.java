@@ -1,3 +1,5 @@
+import org.apache.commons.lang3.StringUtils;
+
 public class Test {
     public static void main(String[] args) {
         String policy = """
@@ -23,6 +25,6 @@ public class Test {
         """;
         String bucket = policy.formatted("vucket");
         System.out.println(bucket);
-
+        System.out.println(StringUtils.isEmpty(null));
     }
 }

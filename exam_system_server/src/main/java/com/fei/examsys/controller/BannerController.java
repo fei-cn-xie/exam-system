@@ -34,6 +34,11 @@ public class BannerController {
     
     /**
      * 上传轮播图图片
+     *          * LEARN 文件上传业务分析
+     *          *  1. 文件非空校验
+     *          *  2. 文件类型校验
+     *          *  3. 调用文件上传业务
+     *          *  4. 返回文件链接
      * @param file 图片文件
      * @return 图片访问URL
      */
@@ -42,8 +47,9 @@ public class BannerController {
     public Result<String> uploadBannerImage(
             @Parameter(description = "要上传的图片文件，支持jpg、png、gif等格式，大小限制5MB") 
             @RequestParam("file") MultipartFile file) {
-
-        return Result.success("上传图片地址", "图片上传成功");
+        String url = bannerService.uploadBannerImage(file);
+        log.info("轮播图上传成功，上传地位为：{}", url);
+        return Result.success(url, "图片上传成功");
     }
     
     /**
@@ -55,6 +61,7 @@ public class BannerController {
     public Result<List<Banner>> getActiveBanners() {
         LambdaQueryWrapper<Banner> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Banner::getIsActive, true);
+        queryWrapper.eq(Banner::getIsDeleted, 0);
         List<Banner> result = bannerService.list(queryWrapper);
         return Result.success(result);
     }
@@ -103,7 +110,9 @@ public class BannerController {
     @PostMapping("/add")  // 处理POST请求
     @Operation(summary = "添加轮播图", description = "创建新的轮播图，需要提供图片URL、标题、跳转链接等信息")  // API描述
     public Result<String> addBanner(@RequestBody Banner banner) {
-        return null;
+
+        bannerService.save(banner);
+        return Result.success("添加轮播图成功！");
     }
     
     /**
@@ -114,12 +123,13 @@ public class BannerController {
     @PutMapping("/update")  // 处理PUT请求
     @Operation(summary = "更新轮播图", description = "更新轮播图的信息，包括图片、标题、跳转链接、排序等")  // API描述
     public Result<String> updateBanner(@RequestBody Banner banner) {
-        LambdaUpdateWrapper<Banner> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.eq(Banner::getId, banner.getId());
-        updateWrapper.setEntity(banner);
-        bannerService.update(updateWrapper);
+//        LambdaUpdateWrapper<Banner> updateWrapper = new LambdaUpdateWrapper<>();
+//        updateWrapper.eq(Banner::getId, banner.getId());
+//        updateWrapper
+//        bannerService.update(updateWrapper);
+        bannerService.updateById(banner);
         log.info("更新轮播图数据成功{}", banner);
-        return Result.success(null);
+        return Result.success("更新轮播图成功");
     }
     
     /**

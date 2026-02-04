@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.UUID;
+
 /**
  * projectName: com.fei.examsys.service.impl
  *
@@ -61,7 +63,11 @@ public class FileUploadServiceImpl implements FileUploadService {
         }
         // 4. 上传文件
         // 在minio中创建一个folder的文件夹，并将文件放在此文件夹中
-        String fileName = folder + '/' + file.getOriginalFilename();
+        // LEARN 1.为了防止文件覆盖，UUID进行对名字去重
+        //   2. 日期 new SimpleDataFormat("yyMMdd").format(new Date());
+        String fileName = folder + '/' + UUID.randomUUID().toString().replaceAll("-","") + '_' + file.getOriginalFilename();
+
+
         minioClient.putObject(PutObjectArgs.builder()
                 .bucket(minioProperties.getBucketName())
                 .contentType(file.getContentType())

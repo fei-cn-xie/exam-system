@@ -18,6 +18,17 @@ spring:
       maximum-pool-size: 12 #连接池最大连接数，默认是10
       minimum-idle: 10 #最小空闲连接数量
       pool-name: SPHHikariPool # 连接池名称
+  servlet:
+    multipart:
+      enabled: true
+      # 单个文件最大大小
+      max-file-size: 10MB
+      # 整个请求的最大大小（包括所有文件）
+      max-request-size: 50MB
+  #    # 文件写入磁盘的阈值（超过此大小的文件会先写入临时文件）
+  #    file-size-threshold: 2KB
+  #    # 临时文件存储位置
+  #    location: /tmp
 
 #用于打印框架生成的sql语句，便于调试
 mybatis-plus:
@@ -26,7 +37,7 @@ mybatis-plus:
   mapper-locations: classpath*:/com.fei.examsys.mapper/**/*.xml
 
 minio:
-  endpoint: http://192.168.56.2:9090
+  endpoint: http://192.168.56.2:9000
   access-key: minioadmin
   secret-key: minioadmin
   bucket-name: test
