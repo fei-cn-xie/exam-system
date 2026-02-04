@@ -3,4 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fei.examsys.mapper.QuestionMapper">
+    <select id="selectCategoryQuestionCount" resultType="java.util.Map">
+        select category_id, count(*) as count
+            from questions
+            where is_deleted = 0
+            group by category_id;
+    </select>
 </mapper>
